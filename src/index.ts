@@ -10,11 +10,13 @@ export default bot;
 
 import('./modules')
 
+export let startTime = Date.now();
+
 bot.on('ready', () => {
   if (!bot.user) return; // This should never happen
   console.log(`Logged in as ${bot.user?.username}!`)
   if (!owners.includes(bot.user.id)) owners.push(bot.user.id);
-  console.log(`Owners: ${owners.join(', ')}`)
+  startTime = Date.now();
 })
 
 bot.login(token);

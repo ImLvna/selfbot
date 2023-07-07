@@ -1,4 +1,4 @@
-import { Client, Message } from 'discord.js-selfbot-v13'
+import { Client, Message, WebEmbed } from 'discord.js-selfbot-v13'
 import ts from 'typescript'
 
 import bot from '../';

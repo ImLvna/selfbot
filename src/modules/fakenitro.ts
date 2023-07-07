@@ -2,6 +2,8 @@ import { Message, PartialMessage } from "discord.js-selfbot-v13";
 
 import bot from '../index'
 import { Command } from "../command";
+import { trueStrings, falseStrings } from "./utils";
+
 
 var oldMessageContents: any = {};
 
@@ -79,10 +81,10 @@ const fakeNitroCommand = new Command({
       args[0] = (!fakeNitroEnabled).toString()
     }
 
-    if (['on', 'true', 'enable'].includes(args[0].toLowerCase())) {
+    if (trueStrings.includes(args[0].toLowerCase())) {
       fakeNitroEnabled = true;
       message.edit("Fakenitro enabled");
-    } else if (['off', 'false', 'disable'].includes(args[0].toLowerCase())) {
+    } else if (falseStrings.includes(args[0].toLowerCase())) {
       fakeNitroEnabled = false;
       message.edit("Fakenitro disabled");
     } else {
