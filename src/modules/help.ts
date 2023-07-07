@@ -5,7 +5,7 @@ function genHelp(command: Command) {
   const aliases = command.aliases.filter(alias => alias !== command.name);
   let msg = [
     `**${command.name}**`,
-    `- command.description`,
+    `- ${command.description}`,
     `Usage: \`${prefix}${command.usage}\``,
   ];
   if (aliases.length > 0) msg.push(`Aliases: ${aliases.map(alias => `\`${alias}\``).join(', ')}`);
