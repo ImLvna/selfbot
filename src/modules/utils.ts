@@ -17,9 +17,10 @@ const pingCommand = new Command({
 })
 bot.on('messageUpdate', async (_message, message) => {
   if (!pingIds[message.id]) return;
+  const startTimeStamp = pingIds[message.id]
   delete pingIds[message.id];
   if (!message.editedTimestamp) return;
-  await message.edit(`Pong! (⬇${pingIds[message.id] - message.createdTimestamp}ms ⬆${message.editedTimestamp - pingIds[message.id]}ms)`);
+  await message.edit(`Pong! (⬇${startTimeStamp - message.createdTimestamp}ms ⬆${message.editedTimestamp - startTimeStamp}ms)`);
 })
 
 const uptimeCommand = new Command({
