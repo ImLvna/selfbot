@@ -46,7 +46,7 @@ async function possiblyTriggerCommand(message: Message|PartialMessage, newMessag
 
   if (!owners.includes(message.author.id)) return; 
   if (!message.content.startsWith(prefix)) return;
-  const args = message.content.slice(1).trim().split(/ +/g);
+  const args = message.content.slice(prefix.length).trim().split(/ +/g);
   const command = args.shift()?.toLowerCase();
   if (!command) return;
   const cmd = _commands.find(cmd => cmd.aliases.includes(command));
