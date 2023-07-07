@@ -5,6 +5,7 @@ import bot from '../';
 import { Command, CommandMessage } from '../command'
 
 var _global = {} as any;
+const _bot = bot
 
 async function callback(message: CommandMessage, args: string[]) {
   const codeRegex = /(`{1,3})((?:js)|(?:ts))?\n?\r?((?:.|\n.(?!`))+)\n?\r?\1/g
