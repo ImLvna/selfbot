@@ -1,10 +1,7 @@
-// Generate a dummy client that can listen for events
-// Once the module is initialized, it will replace the bot with the actual client
-
 import { Client, Message } from 'discord.js-selfbot-v13'
 import ts from 'typescript'
 
-import { prefix } from '../config';
+import bot from '../';
 import { Command, CommandMessage } from '../command'
 
 var _global = {} as any;
