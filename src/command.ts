@@ -47,17 +47,28 @@ async function possiblyTriggerCommand(message: Message|PartialMessage, newMessag
   if (!owners.includes(message.author.id)) return; 
   if (!message.content.startsWith(prefix)) return;
   const args = message.content.slice(prefix.length).trim().split(/ +/g);
-  const command = args.shift()?.toLowerCase();
-  if (!command) return;
-  const cmd = _commands.find(cmd => cmd.aliases.includes(command));
-  if (!cmd) return;
+
+  let chosenAlias: string|undefined;
+  const command = _commands.find(cmd => {
+    // Command aliases can have spaces
+    const aliases = cmd.aliases.map(alias => alias.split(/ +/g));
+    const alias = aliases.find(alias => {
+      const match = args.slice(0, alias.length).join(' ') === alias.join(' ');
+      if (match) chosenAlias = alias.join(' ');
+      return match;
+    })
+    return !!alias;
+  });
+  if (!command || !chosenAlias) return;
+
+  for (let i = 0; i < chosenAlias.split(/ +/g).length; i++) args.shift();
 
   const cmdMessage = message as CommandMessage;
   cmdMessage.prefix = prefix;
-  cmdMessage.usedName = command;
-  cmdMessage.name = cmd.name;
+  cmdMessage.usedName = chosenAlias;
+  cmdMessage.name = command.name;
 
-  cmd.callback(cmdMessage, args);
+  command.callback(cmdMessage, args);
 }
 
 bot.on('messageCreate', possiblyTriggerCommand);
