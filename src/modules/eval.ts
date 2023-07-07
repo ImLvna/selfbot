@@ -51,7 +51,7 @@ async function callback(message: CommandMessage, args: string[]) {
   }
   console = cnsle;
 
-  await message.channel.send(`\`\`\`js\n${output.join('\n')}\n\`\`\``);
+  if (message.name !== "seval") await message.channel.send(`\`\`\`js\n${output.join('\n')}\n\`\`\``);
 }
 
 const evalCommand = new Command({
@@ -67,5 +67,13 @@ const asyncEvalCommand = new Command({
   "description": "Evaluate javascript asynchronously",
   "usage": "aeval <code>",
   "aliases": ["ae"],
+  "callback": callback
+})
+
+const silentEvalCommand = new Command({
+  "name": "seval",
+  "description": "Evaluate javascript silently",
+  "usage": "seval <code>",
+  "aliases": ["se"],
   "callback": callback
 })
