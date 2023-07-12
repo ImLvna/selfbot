@@ -1,4 +1,6 @@
-import _config from '../config.json'
+import { readFileSync, writeFileSync, existsSync } from 'fs'
+import { dirname } from 'path';
+
 interface Config {
   token: string;
   prefix: string;
@@ -9,12 +11,31 @@ interface Config {
   };
   blacklist: { [key: string]: string[] }
 }
-if (!_config.blacklist) (_config.blacklist as any) = {};
-var config = _config as Config;
+
+let config: Config;
+
+let configIsThisDir: boolean;
+
+export function load() {
+  if (existsSync('config.json')) {
+    config = JSON.parse(readFileSync('config.json').toString());
+    configIsThisDir = true;
+  }
+  else if (dirname('.') == "out" && existsSync('../config.json')) {
+    config = JSON.parse(readFileSync('../config.json').toString());
+    configIsThisDir = false;
+  }
+  else throw "Config not found"
+}
+
+load();
+
+config = config!!;
+
+if (!config.blacklist) (config.blacklist as any) = {};
 export default config;
 
-export const token = config.token;
-export const prefix = config.prefix;
-export const owners = config.owners;
-export const botWrangler = config.botWrangler;
-export const blacklist = config.blacklist;
+export function save() {
+  console.log('Saving config...');
+  writeFileSync(`${!configIsThisDir ? '../' : ''}config.json`, JSON.stringify(config, null, 2))
+}

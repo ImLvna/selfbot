@@ -1,12 +1,12 @@
 import { Command, _commands } from "../command";
-import { prefix } from "../config";
+import config from "../config";
 
 function genHelp(command: Command) {
   const aliases = command.aliases.filter(alias => alias !== command.name);
   let msg = [
     `**${command.name}**`,
     `- ${command.description}`,
-    `Usage: \`${prefix}${command.usage}\``,
+    `Usage: \`${config.prefix}${command.usage}\``,
   ];
   if (aliases.length > 0) msg.push(`Aliases: ${aliases.map(alias => `\`${alias}\``).join(', ')}`);
   return msg.join('\n');

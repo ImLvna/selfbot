@@ -1,7 +1,7 @@
 import { Message, PartialMessage } from "discord.js-selfbot-v13";
 
 import bot from './index'
-import { prefix, owners } from "./config";
+import config from "./config";
 
 export const _commands: Command[] = [];
 
@@ -44,9 +44,9 @@ async function possiblyTriggerCommand(message: Message|PartialMessage, newMessag
   if (newMessage) message = newMessage;
   if (message.partial) message = await message.fetch();
 
-  if (!owners.includes(message.author.id)) return; 
-  if (!message.content.startsWith(prefix)) return;
-  const args = message.content.slice(prefix.length).trim().split(/ +/g);
+  if (!config.owners.includes(message.author.id)) return; 
+  if (!message.content.startsWith(config.prefix)) return;
+  const args = message.content.slice(config.prefix.length).trim().split(/ +/g);
 
   let chosenAlias: string|undefined;
   const command = _commands.find(cmd => {
@@ -64,7 +64,7 @@ async function possiblyTriggerCommand(message: Message|PartialMessage, newMessag
   for (let i = 0; i < chosenAlias.split(/ +/g).length; i++) args.shift();
 
   const cmdMessage = message as CommandMessage;
-  cmdMessage.prefix = prefix;
+  cmdMessage.prefix = config.prefix;
   cmdMessage.usedName = chosenAlias;
   cmdMessage.name = command.name;
 

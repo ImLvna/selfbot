@@ -1,5 +1,5 @@
 import bot from "..";
-import { blacklist } from "../config";
+import config from "../config";
 import { Command } from "../command";
 import { DMChannel, Message } from "discord.js-selfbot-v13";
 import { trueStrings, falseStrings } from "./utils";
@@ -9,14 +9,16 @@ bot.on('messageCreate', (message: Message) => {
   if (!blacklistEnabled) return;
   if (message.author.id !== bot.user?.id) return;
 
+  if (message.content.includes("blacklist bypass")) return;
+
   let channelId: string;
   if (message.channel.type == "DM") channelId = (message.channel as DMChannel).recipient.id;
   else channelId = message.channel.id;
 
-  if (!blacklist[channelId]) return;
+  if (!config.blacklist[channelId]) return;
 
   let alreadyDeleted = false;
-  blacklist[channelId].forEach(word=>{
+  config.blacklist[channelId].forEach(word=>{
     if (alreadyDeleted) return;
     if (message.content.toLowerCase().includes(word.toLocaleLowerCase())) {
       alreadyDeleted = true;

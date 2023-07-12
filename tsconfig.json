@@ -7,7 +7,6 @@
         "esModuleInterop": true,
         "sourceMap": true,
         "outDir": "./out",
-        "resolveJsonModule": true,
         "experimentalDecorators": true
     },
     "include": [
