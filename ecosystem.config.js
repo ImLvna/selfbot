@@ -6,13 +6,13 @@ module.exports = {
   }],
 
   deploy: {
-      server: {
-          user: "luna",
-          host: "dad.lvna.me",
-          ref: "origin/main",
-          repo: "git@github.com:imlvna/selfbot.git",
-          path: "/home/luna/servers/selfbot",
-          "post-deploy": "yarn install && yarn build && pm2 startOrRestart ecosystem.config.js"
-      }
+    server: {
+      user: "luna",
+      host: "dad.lvna.me",
+      ref: "origin/main",
+      repo: "git@github.com:imlvna/selfbot.git",
+      path: "/home/luna/servers/selfbot",
+      "post-deploy": "yarn install && yarn build && pm2 startOrRestart ecosystem.config.js"
+    }
   }
 }
