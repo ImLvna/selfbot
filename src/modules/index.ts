@@ -13,17 +13,19 @@ import './shell';
 modules++;
 import './stop';
 modules++;
-import './fakenitro'
+import './fakenitro';
 modules++;
-import './utils'
+import './utils';
 modules++;
-import './botWrangler'
+import './botWrangler';
 modules++;
-import './help'
+import './help';
 modules++;
-import './blacklist'
+import './blacklist';
 modules++;
-import './settings'
+import './settings';
+modules++;
+import './purge';
 modules++;
 
 console.log(`Loaded ${modules} modules and ${_commands.length} commands!`)
