@@ -11,7 +11,7 @@ var oldMessageContents: any = {};
 
 
 async function parseFakeNitro(message: Message) {
-  if (config.toggles.fakeNitro) return;
+  if (!config.toggles.fakeNitro) return;
   if (message.author.id !== bot.user?.id) return;
   
   // Match discord emoji
