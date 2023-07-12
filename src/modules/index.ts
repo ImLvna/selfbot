@@ -23,6 +23,7 @@ import './help'
 modules++;
 import './blacklist'
 modules++;
-
+import './settings'
+modules++;
 
 console.log(`Loaded ${modules} modules and ${_commands.length} commands!`)
