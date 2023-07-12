@@ -65,6 +65,14 @@ bot.on('messageReactionAdd', async (reaction, user) => {
   }
 })
 
+bot.once('ready', ()=>{
+  if (config.toggles.fakeNitro && bot.user!!.nitroType !== "NONE") {
+    console.log("Disabling fakenitro as user is nitro");
+    config.toggles.fakeNitro = false;
+    save();
+  }
+})
+
 
 const fakeNitroCommand = new Command({
   "name": "fakenitro",
