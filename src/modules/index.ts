@@ -21,6 +21,8 @@ import './botWrangler'
 modules++;
 import './help'
 modules++;
+import './blacklist'
+modules++;
 
 
 console.log(`Loaded ${modules} modules and ${_commands.length} commands!`)
