@@ -1,12 +1,11 @@
 import bot from "..";
-import config from "../config";
+import config, { save } from "../config";
 import { Command } from "../command";
 import { DMChannel, Message } from "discord.js-selfbot-v13";
 import { trueStrings, falseStrings } from "./utils";
-var blacklistEnabled = true;
 
 bot.on('messageCreate', (message: Message) => {
-  if (!blacklistEnabled) return;
+  if (!config.toggles.blacklist) return;
   if (message.author.id !== bot.user?.id) return;
 
   if (message.content.includes("blacklist bypass")) return;
@@ -34,20 +33,22 @@ const toggleBlacklist = new Command({
   "aliases": ["bl", "black"],
   "callback": async (message, args) => {
     if (!args[0]) {
-      message.edit(`Blacklist is currently ${blacklistEnabled ? "enabled" : "disabled"}`);
+      message.edit(`Blacklist is currently ${config.toggles.blacklist ? "enabled" : "disabled"}`);
       return;
     }
 
     if (args[0].toLowerCase() === 'toggle') {
-      args[0] = (!blacklistEnabled).toString()
+      args[0] = (!config.toggles.blacklist).toString()
     }
 
     if (trueStrings.includes(args[0].toLowerCase())) {
-      blacklistEnabled = true;
+      config.toggles.blacklist = true;
+      save();
       if (message.deletable) message.delete()
       else message.edit("Blacklist enabled");
     } else if (falseStrings.includes(args[0].toLowerCase())) {
-      blacklistEnabled = false;
+      config.toggles.blacklist = false;
+      save()
       if (message.deletable) message.delete()
       else message.edit("Blacklist disabled");
     } else {

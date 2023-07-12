@@ -3,15 +3,15 @@ import { Message, PartialMessage } from "discord.js-selfbot-v13";
 import bot from '../index'
 import { Command } from "../command";
 import { trueStrings, falseStrings } from "./utils";
+import config, { save } from "../config";
 
 
 var oldMessageContents: any = {};
 
-let fakeNitroEnabled = true;
 
 
 async function parseFakeNitro(message: Message) {
-  if (!fakeNitroEnabled) return;
+  if (config.toggles.fakeNitro) return;
   if (message.author.id !== bot.user?.id) return;
   
   // Match discord emoji
@@ -73,19 +73,21 @@ const fakeNitroCommand = new Command({
   "aliases": ["fn"],
   "callback": async (message, args) => {
     if (!args[0]) {
-      message.edit(`Fakenitro is currently ${fakeNitroEnabled ? "enabled" : "disabled"}`);
+      message.edit(`Fakenitro is currently ${config.toggles.fakeNitro ? "enabled" : "disabled"}`);
       return;
     }
 
     if (args[0].toLowerCase() === 'toggle') {
-      args[0] = (!fakeNitroEnabled).toString()
+      args[0] = (!config.toggles.fakeNitro).toString()
     }
 
     if (trueStrings.includes(args[0].toLowerCase())) {
-      fakeNitroEnabled = true;
+      config.toggles.fakeNitro = true;
+      save();
       message.edit("Fakenitro enabled");
     } else if (falseStrings.includes(args[0].toLowerCase())) {
-      fakeNitroEnabled = false;
+      config.toggles.fakeNitro = false;
+      save();
       message.edit("Fakenitro disabled");
     } else {
       message.edit("Invalid argument");

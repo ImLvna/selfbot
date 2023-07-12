@@ -101,11 +101,15 @@ const setCommand = new Command({
       message.channel.send(`Setting \`${args[0]}\` is currently \`${(config as any)[args[0]]}\``)
     } else {
       let setting = args.shift() as string;
+      let value: any;
       try {
-        (config as any)[setting] = JSON.parse(args.join(' '))
+        value = JSON.parse(args.join(' '))
       } catch(e) {
-        (config as any)[setting] = args.join(' ')
+        value = args.join(' ')
       }
+      (config as any)[setting] = value;
+      save();
+      message.channel.send(`${setting} is now \`${value}\``)
     }
   }
 })

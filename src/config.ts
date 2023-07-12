@@ -2,6 +2,10 @@ import { readFileSync, writeFileSync, existsSync } from 'fs'
 import { dirname } from 'path';
 
 interface Config {
+  toggles: {
+    fakeNitro: boolean;
+    blacklist: boolean;
+  }
   token: string;
   prefix: string;
   owners: string[];
