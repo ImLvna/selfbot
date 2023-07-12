@@ -76,7 +76,7 @@ const reloadCommand = new Command({
 const setCommand = new Command({
   "name": "setting",
   "description": "Change a setting",
-  "usage": "setting",
+  "usage": "setting [setting] [value]",
   "aliases": ["set", "settings"],
   "callback": (message, args) => {
     if (args.length === 0 || !Object.keys(config).includes(args[0])) {
