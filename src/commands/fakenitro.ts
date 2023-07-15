@@ -1,19 +1,16 @@
 import { Message, PartialMessage } from "discord.js-selfbot-v13";
 
-import bot from '../index'
+import bot from "../index";
 import { Command } from "../command";
 import { trueStrings, falseStrings } from "./utils";
 import config, { save } from "../config";
 
-
 var oldMessageContents: any = {};
-
-
 
 async function parseFakeNitro(message: Message) {
   if (!config.toggles.fakeNitro) return;
   if (message.author.id !== bot.user?.id) return;
-  
+
   // Match discord emoji
   const emojiRegex = /:\w+(?:\\~\d)?:/g;
   const emojiMatches = message.content.match(emojiRegex);
@@ -25,7 +22,9 @@ async function parseFakeNitro(message: Message) {
       // Get emoji
       // Parse :emojiname~1: syntax for if there are multiple emoji with the same name
       let tildaIndex = 0;
-      if (emojiName.substring(emojiName.length - 2, emojiName.length - 1) === '\~') {
+      if (
+        emojiName.substring(emojiName.length - 2, emojiName.length - 1) === "~"
+      ) {
         tildaIndex = Number.parseInt(emojiName.substring(emojiName.length - 1));
         emojiName = emojiName.substring(0, emojiName.length - 3);
       }
@@ -35,58 +34,66 @@ async function parseFakeNitro(message: Message) {
             tildaIndex--;
             return;
           }
-          newContent = newContent.replaceAll(match, `https://cdn.discordapp.com/emojis/${emoji.id}.${emoji.animated ? "gif" : "png"}?quality=lossless&name=${emoji.name}&size=48`);
+          newContent = newContent.replaceAll(
+            match,
+            `https://cdn.discordapp.com/emojis/${emoji.id}.${
+              emoji.animated ? "gif" : "png"
+            }?quality=lossless&name=${emoji.name}&size=48`
+          );
         }
-      })
+      });
       if (newContent !== message.content) {
         oldMessageContents[message.id] = message.content;
         message.edit(newContent);
       }
-    })
+    });
   }
 }
 
-bot.on('messageCreate', parseFakeNitro);
+bot.on("messageCreate", parseFakeNitro);
 
-
-bot.on('messageDelete', async (message) => {
+bot.on("messageDelete", async (message) => {
   if (oldMessageContents[message.id]) delete oldMessageContents[message.id];
-})
+});
 
-bot.on('messageReactionAdd', async (reaction, user) => {
+bot.on("messageReactionAdd", async (reaction, user) => {
   // Revert the fakenitro message if the user reacts with ❌, ❎ or ✖
   if (!oldMessageContents[reaction.message.id]) return;
-  if (reaction.message.partial) reaction.message = await reaction.message.fetch();
+  if (reaction.message.partial)
+    reaction.message = await reaction.message.fetch();
   if (reaction.message.author.id !== bot.user?.id) return;
-  if (['❌', '❎', '✖'].includes(reaction.emoji.name|| '')) {
+  if (["❌", "❎", "✖"].includes(reaction.emoji.name || "")) {
     await reaction.message.edit(oldMessageContents[reaction.message.id]);
     delete oldMessageContents[reaction.message.id];
     reaction.remove();
   }
-})
+});
 
-bot.once('ready', ()=>{
+bot.once("ready", () => {
   if (config.toggles.fakeNitro && bot.user!!.nitroType !== "NONE") {
     console.log("Disabling fakenitro as user is nitro");
     config.toggles.fakeNitro = false;
     save();
   }
-})
+});
 
-
-const fakeNitroCommand = new Command({
-  "name": "fakenitro",
-  "description": "Toggle fakenitro",
-  "usage": "fakenitro [on|off]",
-  "aliases": ["fn"],
-  "callback": async (message, args) => {
+export default new Command({
+  name: "fakenitro",
+  description: "Toggle fakenitro",
+  usage: "fakenitro [on|off]",
+  aliases: ["fn"],
+  callback: async (message, args) => {
     if (!args[0]) {
-      message.edit(`Fakenitro is currently ${config.toggles.fakeNitro ? "enabled" : "disabled"}`);
+      message.edit(
+        `Fakenitro is currently ${
+          config.toggles.fakeNitro ? "enabled" : "disabled"
+        }`
+      );
       return;
     }
 
-    if (args[0].toLowerCase() === 'toggle') {
-      args[0] = (!config.toggles.fakeNitro).toString()
+    if (args[0].toLowerCase() === "toggle") {
+      args[0] = (!config.toggles.fakeNitro).toString();
     }
 
     if (trueStrings.includes(args[0].toLowerCase())) {
@@ -100,5 +107,5 @@ const fakeNitroCommand = new Command({
     } else {
       message.edit("Invalid argument");
     }
-  }
-})
+  },
+});
