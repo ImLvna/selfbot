@@ -4,12 +4,20 @@ import { Command, CommandMessage } from "../command";
 
 let runningProcesses: ChildProcess[] = [];
 
+
+const shorthands = [
+  "gh",
+  "docker"
+]
+
 const shellCommand = new Command({
   name: "shell",
   description: "Run shell commands",
   usage: "shell <command>",
-  aliases: ["sh", "bash", "zsh"],
+  aliases: ["sh", "bash", "zsh"].concat(shorthands),
   callback: async (message: CommandMessage, args: string[]) => {
+
+    if (shorthands.includes(message.usedName)) args.unshift(message.usedName)
     const command = args.join(" ");
 
     let output: string[] = [];
