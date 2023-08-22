@@ -5,11 +5,13 @@ interface Config {
   toggles: {
     fakeNitro: boolean;
     blacklist: boolean;
+    replacements: boolean;
   };
   token: string;
   prefix: string;
   owners: string[];
   blacklist: { [key: string]: string[] };
+  replacements: { [key: string]: string };
 }
 
 let config: Config;
