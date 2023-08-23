@@ -8,7 +8,7 @@ module.exports = {
   deploy: {
     server: {
       user: "luna",
-      host: "ssh.lvna.me",
+      host: "ssh.lvna.gay",
       ref: "origin/main",
       repo: "git@github.com:imlvna/selfbot.git",
       path: "/home/luna/servers/selfbot",
