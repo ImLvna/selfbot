@@ -24,7 +24,20 @@ export default new Command({
     if (minutes > 0) messagestr += `${minutes}m `;
     if (seconds > 0) messagestr += `${seconds}s `;
     
-    if (message.author.id == bot.user?.id) message.edit(messagestr)
-    else message.channel.send(messagestr);
+    export default new Command({
+      aliases: ['ping'],
+      name: 'ping',
+      description: 'Ping the bot',
+      usage: '+ping',
+      callback: async (context) => {
+        let now = Date.now();
+        let m = await context.channel.send(`Pong! 
+        Gateway (Receiving): ${context.bot.ws.ping}ms
+        Rest (Sending): ...`);
+        await m.edit(`Pong!
+        Gateway (Receiving): ${context.bot.ws.ping}ms
+        Rest (Sending): ${Date.now() - now}ms`);
+      }
+    })
   },
 });
